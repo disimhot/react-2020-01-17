@@ -3,7 +3,7 @@ import {Button} from 'antd'
 import {useAmount} from '../custom-hooks/use-amount'
 
 function Dish(props) {
-  const {amount, decrease, increase} = useAmount(10)
+  const {amount, decrease, increase} = useAmount()
   return (
     <div>
       <p>{props.dish.name}</p>
