@@ -5,7 +5,7 @@ function Rating(props) {
   return (
     <div>
       <h4>Средний рейтинг</h4>
-      <Rate count={starsAmount} defaultValue={props.rating} disabled />
+      <Rate count={starsAmount} value={props.rating} disabled />
     </div>
   )
 }
