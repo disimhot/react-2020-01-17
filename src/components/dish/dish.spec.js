@@ -16,9 +16,20 @@ describe('Dish', function() {
       .find('button[data-automation-id="INCREASE"]')
       .simulate('click')
       .simulate('click')
+
+    expect(wrapper.find('[data-automation-id="AMOUNT"]').text()).toBe('2')
+  })
+})
+
+describe('Dish', function() {
+  it('should decrease card amount when click on minus button', function() {
+    const wrapper = mount(<Dish dish={dishMock} />)
+
+    wrapper
+      .find('button[data-automation-id="DECREASE"]')
       .simulate('click')
       .simulate('click')
 
-    expect(wrapper.find('[data-automation-id="AMOUNT"]').text()).toBe('4')
+    expect(wrapper.find('[data-automation-id="AMOUNT"]').text()).toBe('0')
   })
 })

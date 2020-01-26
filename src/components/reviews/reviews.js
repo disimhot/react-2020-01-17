@@ -7,7 +7,12 @@ function Reviews({reviews}) {
     <Row type="flex" justify="center" gutter={{xs: 8, sm: 16, md: 24}}>
       <Col xs={24} md={16}>
         {reviews.map(review => (
-          <Review review={review} key={review.id} />
+          <Review
+            className={'TEST'}
+            data-automation-id="REVIEW_ITEM"
+            review={review}
+            key={review.id}
+          />
         ))}
       </Col>
     </Row>
