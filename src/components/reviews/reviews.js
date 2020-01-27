@@ -8,7 +8,6 @@ function Reviews({reviews}) {
       <Col xs={24} md={16}>
         {reviews.map(review => (
           <Review
-            className={'TEST'}
             data-automation-id="REVIEW_ITEM"
             review={review}
             key={review.id}

@@ -6,10 +6,17 @@ const Review = ({review}) => (
   <Card className={styles.review}>
     <Row type="flex" align="middle">
       <Col xs={24} md={18} align="left">
-        <Typography.Title className={styles.name} level={4}>
+        <Typography.Title
+          data-automation-id="REVIEW_AUTHOR"
+          className={styles.name}
+          level={4}
+        >
           {review.user}
         </Typography.Title>
-        <Typography.Text className={styles.comment}>
+        <Typography.Text
+          data-automation-id="REVIEW_TEXT"
+          className={styles.comment}
+        >
           {review.text}
         </Typography.Text>
       </Col>
