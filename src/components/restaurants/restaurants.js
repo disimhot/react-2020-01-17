@@ -1,6 +1,8 @@
 import React, {useCallback, useMemo, useState} from 'react'
-import Restaurant from '../restaurant'
+import PropTypes from 'prop-types'
+import Restaurant, {RestaurantProps} from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
+import {connect} from 'react-redux'
 
 function Restaurants(props) {
   const [currentId, setCurrentId] = useState(props.restaurants[0].id)
@@ -23,4 +25,12 @@ function Restaurants(props) {
   )
 }
 
-export default Restaurants
+Restaurants.propTypes = {
+  restaurants: PropTypes.arrayOf(PropTypes.shape(RestaurantProps.restaurant)),
+}
+
+const mapStateToProps = state => ({
+  restaurants: state.restaurants,
+})
+
+export default connect(mapStateToProps)(Restaurants)

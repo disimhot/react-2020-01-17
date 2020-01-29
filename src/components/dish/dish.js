@@ -1,14 +1,15 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {Card, Typography, Button, Row, Col} from 'antd'
 import styles from './dish.module.css'
-import counter from '../../decorators/counter'
-import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import {addToCart} from '../../store/action-creators'
 
 function Dish(props) {
   const {
     dish,
 
-    // from decorator
+    // from store
     amount,
     increase,
     decrease,
@@ -56,16 +57,25 @@ function Dish(props) {
   )
 }
 
-Dish.propTypes = {
-  dish: PropTypes.object.isRequired,
-  amount: PropTypes.number.isRequired,
-  increase: PropTypes.func.isRequired,
-  decrease: PropTypes.func.isRequired,
+export const DishProps = {
+  dish: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    ingredients: PropTypes.arrayOf(PropTypes.string),
+    price: PropTypes.number,
+  }),
 }
 
-Dish.defaultProps = {
-  dish: {},
-  amount: 0,
+Dish.propTypes = DishProps
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    amount: state.cart[ownProps.dish.id] || 0,
+  }
 }
 
-export default counter(Dish)
+const mapDispatchToProps = dispatch => ({
+  increase: id => dispatch(addToCart(id)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dish)

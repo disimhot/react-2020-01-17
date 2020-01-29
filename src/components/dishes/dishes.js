@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import Dish from '../dish'
+import Dish, {DishProps} from '../dish'
 import PropTypes from 'prop-types'
 
 class Dishes extends Component {
   static propTypes = {
-    menu: PropTypes.array.isRequired,
+    menu: PropTypes.arrayOf(PropTypes.shape(DishProps)).isRequired,
   }
 
   render() {

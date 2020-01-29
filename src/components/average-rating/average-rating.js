@@ -1,4 +1,5 @@
 import React, {useMemo} from 'react'
+import PropTypes from 'prop-types'
 import {Rate} from 'antd'
 
 function AverageRating({reviews}) {
@@ -13,6 +14,14 @@ function AverageRating({reviews}) {
       <Rate value={normalizedRating} disabled allowHalf />
     </div>
   )
+}
+
+AverageRating.propTypes = {
+  reviews: PropTypes.arrayOf(
+    PropTypes.shape({
+      rating: PropTypes.number,
+    })
+  ).isRequired,
 }
 
 export default AverageRating
