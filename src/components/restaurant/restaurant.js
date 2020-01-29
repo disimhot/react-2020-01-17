@@ -5,7 +5,6 @@ import AverageRating from '../average-rating'
 import Reviews from '../reviews'
 import Hero from '../hero'
 import styles from './restaurant.module.css'
-import PropTypes from 'prop-types'
 
 export const RestaurantProps = {
   restaurant: PropTypes.shape({

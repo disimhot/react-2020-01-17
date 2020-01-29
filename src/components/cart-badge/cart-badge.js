@@ -2,12 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Badge, Button} from 'antd'
 import styles from './cart-badge.module.css'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
+import {openModal} from '../../store/action-creators'
 
 function CartBadge() {
   const amount = useSelector(state =>
     Object.values(state.cart).reduce((acc, count) => acc + count, 0)
   )
+  const dispatch = useDispatch()
+
   return (
     <Badge count={amount} className={styles.cartButtonContainer}>
       <Button
@@ -15,6 +18,7 @@ function CartBadge() {
         size="large"
         type="primary"
         className={styles.cartButton}
+        onClick={() => dispatch(openModal())}
       />
     </Badge>
   )

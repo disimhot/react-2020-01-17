@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux'
 import {restaurantsReducer} from './restaurants'
 import {cartReducer} from './cart'
+import {orderReducer} from './order'
 
 export const reducer = combineReducers({
   counter: (counterState = 10, action) => {
@@ -9,4 +10,5 @@ export const reducer = combineReducers({
   },
   restaurants: restaurantsReducer,
   cart: cartReducer,
+  order: orderReducer,
 })
