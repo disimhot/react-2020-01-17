@@ -1,17 +1,27 @@
 export const cartReducer = (cartState = {}, action) => {
   switch (action.type) {
     case 'ADD_TO_CART': {
-      const {id} = action.payload
+      const {id, name, price} = action.payload.id
       return {
         ...cartState,
-        [id]: cartState[id] ? cartState[id] + 1 : 1,
+        [id]: {
+          ...cartState[id],
+          amount: (cartState[id] || {}).amount ? cartState[id].amount + 1 : 1,
+          name: name,
+          price: price,
+        },
       }
     }
     case 'REMOVE_FROM_CARD': {
-      const {id} = action.payload
+      const {id, name, price} = action.payload.id
       return {
         ...cartState,
-        [id]: cartState[id] ? cartState[id] - 1 : 0,
+        [id]: {
+          ...cartState[id],
+          amount: (cartState[id] || {}).amount ? cartState[id].amount - 1 : 0,
+          name: name,
+          price: price,
+        },
       }
     }
     default:

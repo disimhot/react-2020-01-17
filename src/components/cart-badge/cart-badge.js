@@ -7,8 +7,9 @@ import {openModal} from '../../store/action-creators'
 
 function CartBadge() {
   const amount = useSelector(state =>
-    Object.values(state.cart).reduce((acc, count) => acc + count, 0)
+    Object.values(state.cart).reduce((acc, count) => acc + count.amount, 0)
   )
+
   const dispatch = useDispatch()
 
   return (
