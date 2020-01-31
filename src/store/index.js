@@ -1,9 +1,7 @@
 import {createStore} from 'redux'
 import {reducer} from './reducers'
 
-const store = createStore(reducer)
+export const store = createStore(reducer)
 
-// only for experimenting!!!
+// ONLY FOR DEV
 window.store = store
-
-export {store}

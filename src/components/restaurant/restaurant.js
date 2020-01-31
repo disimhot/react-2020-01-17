@@ -5,6 +5,8 @@ import AverageRating from '../average-rating'
 import Reviews from '../reviews'
 import Hero from '../hero'
 import styles from './restaurant.module.css'
+import {Col, Row} from 'antd'
+import Order from '../order'
 
 export const RestaurantProps = {
   restaurant: PropTypes.shape({
@@ -36,10 +38,15 @@ class Restaurant extends Component {
         <Hero heading={name}>
           <AverageRating reviews={reviews} />
         </Hero>
-        <div className={styles.restaurantContent}>
-          <Reviews reviews={reviews} />
-          {!this.state.error && <Dishes menu={menu} />}
-        </div>
+        <Row>
+          <Col span={18} className={styles.restaurantContent}>
+            <Reviews reviews={reviews} />
+            <Dishes menu={menu} />
+          </Col>
+          <Col span={6}>
+            <Order />
+          </Col>
+        </Row>
       </div>
     )
   }

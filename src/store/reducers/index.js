@@ -1,12 +1,10 @@
 import {combineReducers} from 'redux'
+import {countReducer} from './count'
 import {restaurantsReducer} from './restaurants'
 import {cartReducer} from './cart'
 
 export const reducer = combineReducers({
-  counter: (counterState = 10, action) => {
-    console.log('Action', action)
-    return action.type === 'INCREASE' ? counterState + 1 : counterState
-  },
+  count: countReducer,
   restaurants: restaurantsReducer,
   cart: cartReducer,
 })
