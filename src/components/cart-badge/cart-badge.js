@@ -3,10 +3,11 @@ import PropTypes from 'prop-types'
 import {Badge, Button} from 'antd'
 import styles from './cart-badge.module.css'
 import {useSelector} from 'react-redux'
+import {selectCart} from '../../store/selectors'
 
 function CartBadge() {
   const amount = useSelector(state =>
-    Object.values(state.cart).reduce((acc, count) => acc + count, 0)
+    Object.values(selectCart(state)).reduce((acc, count) => acc + count, 0)
   )
   return (
     <Badge count={amount} className={styles.cartButtonContainer}>
