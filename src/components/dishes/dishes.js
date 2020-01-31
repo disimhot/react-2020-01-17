@@ -12,8 +12,8 @@ class Dishes extends Component {
 
     return (
       <div>
-        {menu.map(dish => (
-          <Dish key={dish.id} dish={dish} />
+        {menu.map(dishId => (
+          <Dish key={dishId} id={dishId} />
         ))}
       </div>
     )
