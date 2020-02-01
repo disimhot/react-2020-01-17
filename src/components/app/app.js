@@ -4,6 +4,7 @@ import Restaurants from '../restaurants'
 import {Layout} from 'antd'
 import Header from '../header'
 import {store} from '../../store'
+import Counter from '../counter'
 
 class App extends Component {
   static propTypes = {
@@ -16,6 +17,7 @@ class App extends Component {
         <div>
           <Layout>
             <Header />
+            <Counter />
             <Layout.Content>
               <Restaurants />
             </Layout.Content>

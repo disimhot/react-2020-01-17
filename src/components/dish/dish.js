@@ -1,19 +1,24 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import PropTypes from 'prop-types'
 import {Card, Typography, Button, Row, Col} from 'antd'
 import styles from './dish.module.css'
-import {connect} from 'react-redux'
-import {addToCart} from '../../store/action-creators'
+import {connect, useSelector} from 'react-redux'
+import {addToCart, removeFromCart} from '../../store/action-creators'
+import {selectAmountFromCart, selectDish} from '../../store/selectors'
 
 function Dish(props) {
   const {
-    dish,
+    id,
 
     // from store
     amount,
     increase,
     decrease,
   } = props
+
+  const selectDishMemo = useCallback(state => selectDish(state, props), [props])
+
+  const dish = useSelector(selectDishMemo)
 
   return (
     <Card className={styles.productDetailedOrderCard}>
@@ -58,6 +63,7 @@ function Dish(props) {
 }
 
 export const DishProps = {
+  id: PropTypes.string.isRequired,
   dish: PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string,
@@ -70,12 +76,13 @@ Dish.propTypes = DishProps
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    amount: state.cart[ownProps.dish.id] || 0,
+    amount: selectAmountFromCart(state, ownProps),
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  increase: id => dispatch(addToCart(id)),
-})
+const mapDispatchToProps = {
+  increase: addToCart,
+  decrease: removeFromCart,
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dish)
