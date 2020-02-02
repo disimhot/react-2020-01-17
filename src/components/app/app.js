@@ -5,6 +5,7 @@ import {Layout} from 'antd'
 import Header from '../header'
 import {store} from '../../store'
 import Counter from '../counter'
+import PropTypes from 'prop-types'
 
 class App extends Component {
   static propTypes = {

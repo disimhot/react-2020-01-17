@@ -2,11 +2,17 @@ import {createSelector} from 'reselect'
 
 export const selectId = (state, ownProps) => ownProps.id
 
+export const selectOwnProps = (state, ownProps) => ownProps
+
 export const selectCart = state => state.cart
 
 export const selectRestaurantList = state => state.restaurants
 
 export const selectDishes = state => state.dishes
+
+export const selectReviews = state => state.reviews
+
+export const selectUsers = state => state.users
 
 export const selectDish = createSelector(
   selectDishes,
@@ -16,11 +22,32 @@ export const selectDish = createSelector(
   }
 )
 
+export const selectReview = createSelector(
+  selectReviews,
+  selectId,
+  (reviews, id) => {
+    return reviews[id]
+  }
+)
+
 export const selectAmountFromCart = createSelector(
   selectCart,
   selectId,
   (cart, id) => {
     return cart[id] || 0
+  }
+)
+
+export const selectAverageRating = createSelector(
+  selectReviews,
+  selectOwnProps,
+  (reviews, reviewKeys) => {
+    return (
+      reviewKeys.reduce(
+        (acc, reviewKey) => (acc += reviews[reviewKey].rating),
+        0
+      ) / reviewKeys.length
+    )
   }
 )
 

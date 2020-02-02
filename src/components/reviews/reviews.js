@@ -1,18 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Review, {ReviewProps} from './review'
+import Review from './review'
 import {Col, Row} from 'antd'
 import ReviewForm from '../review-form'
 
-function Reviews({reviews = []}) {
+function Reviews({reviews}) {
   return (
     <Row type="flex" justify="center" gutter={{xs: 8, sm: 16, md: 24}}>
       <Col xs={24} md={16}>
-        {reviews.map(review => (
+        {reviews.map(reviewId => (
           <Review
             data-automation-id="REVIEW_ITEM"
-            review={review}
-            key={review.id}
+            id={reviewId}
+            key={reviewId}
           />
         ))}
         <ReviewForm id={''} />
@@ -22,7 +22,7 @@ function Reviews({reviews = []}) {
 }
 
 Reviews.propTypes = {
-  reviews: PropTypes.arrayOf(PropTypes.shape(ReviewProps)).isRequired,
+  reviews: PropTypes.array.isRequired,
 }
 
 export default Reviews
