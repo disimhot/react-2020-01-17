@@ -8,18 +8,21 @@ import styles from './review-form.module.css'
 
 const ReviewForm = ({id}) => {
   const dispatch = useDispatch()
+
   const handleSubmit = event => {
     event.preventDefault()
     //event.persist()
     console.log('Submit', event)
     dispatch(addReview(formData))
+    setFormData(initialForm)
   }
-
-  const [formData, setFormData] = useState({
+  const initialForm = {
     name: '',
-    review: '',
+    text: '',
     rating: 0,
-  })
+    restaurantId: id,
+  }
+  const [formData, setFormData] = useState(initialForm)
 
   const updateFormData = event => {
     setFormData({
@@ -28,7 +31,7 @@ const ReviewForm = ({id}) => {
     })
   }
 
-  const {name, review, rating} = formData
+  const {name, text, rating} = formData
 
   return (
     <Card className={styles.reviewForm}>
@@ -48,14 +51,20 @@ const ReviewForm = ({id}) => {
             />
             <Input.TextArea
               rows={3}
-              name="review"
-              value={review}
+              name="text"
+              value={text}
               onChange={event => updateFormData(event)}
               size="large"
               required
             />
             <div>
-              Rating: <Rate name="rating" value={0} rating={rating} />
+              Rating:{' '}
+              <Rate
+                name="rating"
+                value={rating}
+                rating={rating}
+                onChange={value => setFormData({...formData, rating: value})}
+              />
             </div>
             <Button htmlType="submit" className={styles.submitButton}>
               PUBLISH REVIEW

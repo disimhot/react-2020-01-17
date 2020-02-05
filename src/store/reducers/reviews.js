@@ -11,14 +11,13 @@ const initialState = normalizedReviews.reduce((reviews, review) => {
 export const reviewsReducer = (reviewsState = initialState, action) => {
   switch (action.type) {
     case ADD_REVIEW: {
-      const {id, review, userId, rating} = action.payload
-      console.log('Reducer action.payload', action.payload)
+      const {id, text, userId, rating} = action.payload
       return {
         ...reviewsState,
         [id]: {
           id: id,
           userId: userId,
-          text: review,
+          text: text,
           rating: rating,
         },
       }

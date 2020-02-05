@@ -1,4 +1,5 @@
 import {ADD_REVIEW} from '../common'
+import {addUser, addReview, updateRestaurant} from '../action-creators'
 
 const generateRandomId = function uniqueID() {
   function chr4() {
@@ -26,25 +27,25 @@ export const generatingID = store => next => action => {
 
   if (action.type === ADD_REVIEW) {
     const {users} = store.getState()
+
     const {name} = action.payload
     const existInUsers = Object.values(users).some(user => user.name === name)
     const userId = existInUsers
       ? Object.values(users)
           .filter(user => user.name === name)
-          .map(user => user.id)
+          .map(({id}) => id)
+          .join('')
       : generateRandomId()
 
-    const newPayload = {}
-    newPayload.id = generateRandomId()
-    newPayload.userId = userId
+    const newPayload = {
+      id: generateRandomId(),
+      userId: userId,
+      ...action.payload,
+    }
 
-    next({
-      ...action,
-      payload: {
-        ...action.payload,
-        ...newPayload,
-      },
-    })
+    next(addUser(newPayload))
+    next(addReview(newPayload))
+    next(updateRestaurant(newPayload))
     console.log('after', store.getState())
   }
 }

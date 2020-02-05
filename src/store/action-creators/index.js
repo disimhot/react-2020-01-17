@@ -4,6 +4,8 @@ import {
   INCREMENT,
   REMOVE_FROM_CART,
   ADD_REVIEW,
+  ADD_USER,
+  UPDATE_RESTAURANT,
 } from '../common'
 
 export const increment = () => {
@@ -39,6 +41,20 @@ export const removeFromCart = dishId => {
 export const addReview = payload => {
   return {
     type: ADD_REVIEW,
+    payload: payload,
+  }
+}
+
+export const addUser = payload => {
+  return {
+    type: ADD_USER,
+    payload: payload,
+  }
+}
+
+export const updateRestaurant = payload => {
+  return {
+    type: UPDATE_RESTAURANT,
     payload: payload,
   }
 }

@@ -4,7 +4,7 @@ import Review from './review'
 import {Col, Row} from 'antd'
 import ReviewForm from '../review-form'
 
-function Reviews({reviews}) {
+function Reviews({reviews, id}) {
   return (
     <Row type="flex" justify="center" gutter={{xs: 8, sm: 16, md: 24}}>
       <Col xs={24} md={16}>
@@ -15,7 +15,7 @@ function Reviews({reviews}) {
             key={reviewId}
           />
         ))}
-        <ReviewForm id={''} />
+        <ReviewForm id={id} />
       </Col>
     </Row>
   )
