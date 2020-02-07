@@ -9,6 +9,8 @@
     "@testing-library/user-event": "^7.1.2",
     "antd": "^3.26.7",
     "classnames": "^2.2.6",
+    "immer": "^5.3.4",
+    "immutable": "^4.0.0-rc.12",
     "normalize.css": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",

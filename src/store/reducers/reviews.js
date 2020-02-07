@@ -1,22 +1,20 @@
 import {normalizedReviews} from '../../fixtures'
 import {arrayToMap} from '../utils'
 import {ADD_REVIEW} from '../common'
+import {Map} from 'immutable'
 
 export const reviewsReducer = (
-  reviewsState = arrayToMap(normalizedReviews),
+  reviewsState = new Map(arrayToMap(normalizedReviews)),
   action
 ) => {
   switch (action.type) {
     case ADD_REVIEW: {
-      return {
-        ...reviewsState,
-        [action.generatedId]: {
-          id: action.generatedId,
-          userId: action.userId,
-          text: action.payload.text,
-          rating: action.payload.rating,
-        },
-      }
+      return reviewsState.set(action.generatedId, {
+        id: action.generatedId,
+        userId: action.userId,
+        text: action.payload.text,
+        rating: action.payload.rating,
+      })
     }
     default:
       return reviewsState
