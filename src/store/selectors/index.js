@@ -4,8 +4,6 @@ export const selectRestaurants = state => state.restaurants
 
 export const selectCart = state => state.cart
 
-export const selectDishes = state => state.dishes
-
 export const selectDishesMap = store => store.dishes
 
 export const selectReviewsMap = store => store.reviews.toJS()
@@ -17,6 +15,10 @@ export const selectUserList = createSelector(selectUsersMap, usersMap =>
 )
 
 export const selectId = (_, ownProps) => ownProps.id
+
+export const selectDishes = createSelector(selectDishesMap, dishesMap =>
+  Object.values(dishesMap)
+)
 
 export const selectOrderedDishes = createSelector(
   selectRestaurants,
