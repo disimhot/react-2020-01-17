@@ -1,37 +1,33 @@
 import {createSelector} from 'reselect'
 
-export const selectId = (state, ownProps) => ownProps.id
+export const selectRestaurants = state => state.restaurants
 
 export const selectCart = state => state.cart
 
-export const selectRestaurantList = state => state.restaurants
-
 export const selectDishes = state => state.dishes
 
-export const selectDish = createSelector(
-  selectDishes,
-  selectId,
-  (dishes, id) => {
-    return dishes[id]
-  }
+export const selectDishesMap = store => store.dishes
+
+export const selectReviewsMap = store => store.reviews
+
+export const selectUsersMap = store => store.users
+
+export const selectUserList = createSelector(selectUsersMap, usersMap =>
+  Object.values(usersMap)
 )
 
-export const selectAmountFromCart = createSelector(
-  selectCart,
-  selectId,
-  (cart, id) => {
-    return cart[id] || 0
-  }
-)
+export const selectId = (_, ownProps) => ownProps.id
 
-export const selectCartInfo = createSelector(
+export const selectOrderedDishes = createSelector(
+  selectRestaurants,
   selectCart,
-  selectRestaurantList,
-  (cart, restaurants) => {
-    const orderedDishes = restaurants.reduce(
+  selectDishesMap,
+  (restaurants, cart, dishes) =>
+    restaurants.reduce(
       (result, restaurant) => {
-        restaurant.menu.forEach(dish => {
-          const amount = cart[dish.id]
+        restaurant.menu.forEach(dishId => {
+          const amount = cart[dishId]
+          const dish = dishes[dishId]
           if (amount) {
             const totalDishPrice = amount * dish.price
             result.totalPrice += totalDishPrice
@@ -49,9 +45,32 @@ export const selectCartInfo = createSelector(
         totalPrice: 0,
       }
     )
+)
 
-    return {
-      orderedDishes,
-    }
+export const selectUser = createSelector(
+  selectUsersMap,
+  selectId,
+  (users, id) => {
+    return users[id]
   }
 )
+
+export const selectReviews = createSelector(
+  selectReviewsMap,
+  selectRestaurants,
+  selectId,
+  (reviews, restaurants, id) => {
+    const restaurant = restaurants.find(item => item.id === id)
+    return restaurant
+      ? restaurant.reviews.map(reviewId => reviews[reviewId])
+      : []
+  }
+)
+
+export const selectAverageRating = createSelector(selectReviews, reviews => {
+  const rawRating =
+    reviews.reduce((acc, {rating}) => {
+      return acc + rating
+    }, 0) / reviews.length
+  return Math.floor(rawRating * 2) / 2
+})

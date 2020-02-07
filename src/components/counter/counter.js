@@ -6,19 +6,33 @@ import {decrement, increment} from '../../store/action-creators'
 class Counter extends Component {
   render() {
     console.log('Counter render')
-
     return (
       <div>
         <span style={{padding: '16px'}}>{this.props.count}</span>
         <Button.Group>
-          <Button onClick={this.props.decrement} type="primary" icon="minus" />
-          <Button onClick={this.props.increment} type="primary" icon="plus" />
+          <Button onClick={this.decrease} type="primary" icon="minus" />
+          <Button onClick={this.increase} type="primary" icon="plus" />
         </Button.Group>
       </div>
     )
   }
+  decrease = () => {
+    this.props.decrementFromDispatch()
+  }
+  increase = () => {
+    this.props.incrementFromDispatch()
+  }
 }
 
-export default connect(state => ({count: state.count}), {increment, decrement})(
-  Counter
-)
+const mapStateToProps = state => {
+  return {
+    count: state.count,
+  }
+}
+
+const mapDispatchToProps = {
+  incrementFromDispatch: increment,
+  decrementFromDispatch: decrement,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter)

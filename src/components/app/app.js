@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {Provider} from 'react-redux'
 import Restaurants from '../restaurants'
 import {Layout} from 'antd'
 import Header from '../header'
+import './app.css'
 import {store} from '../../store'
+import {Provider} from 'react-redux'
 import Counter from '../counter'
 
 class App extends Component {

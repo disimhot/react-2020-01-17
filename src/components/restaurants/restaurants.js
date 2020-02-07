@@ -1,22 +1,24 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import PropTypes from 'prop-types'
-import Restaurant, {RestaurantProps} from '../restaurant'
+import React, {useCallback, useEffect, useState} from 'react'
+import Restaurant from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
 import {connect} from 'react-redux'
-import {selectRestaurantList} from '../../store/selectors'
+import {selectRestaurants} from '../../store/selectors'
 
 function Restaurants(props) {
   const [currentId, setCurrentId] = useState(props.restaurants[0].id)
 
-  const restaurant = useMemo(() => {
-    return props.restaurants.find(restaurant => restaurant.id === currentId)
-  }, [currentId, props.restaurants])
+  useEffect(() => {
+    props.fetchRestaurants && props.fetchRestaurants()
+  }, [props])
 
+  const restaurant = props.restaurants.find(
+    restaurant => restaurant.id === currentId
+  )
   const handleRestaurantChange = useCallback(id => setCurrentId(id), [
     setCurrentId,
   ])
   return (
-    <div>
+    <div data-automation-id="RESTAURANTS">
       <RestaurantsNavigation
         restaurants={props.restaurants}
         onRestaurantChange={handleRestaurantChange}
@@ -26,12 +28,8 @@ function Restaurants(props) {
   )
 }
 
-Restaurants.propTypes = {
-  restaurants: PropTypes.arrayOf(PropTypes.shape(RestaurantProps.restaurant)),
-}
-
 const mapStateToProps = state => ({
-  restaurants: selectRestaurantList(state),
+  restaurants: selectRestaurants(state),
 })
 
 export default connect(mapStateToProps)(Restaurants)
