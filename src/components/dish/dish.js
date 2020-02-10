@@ -1,14 +1,13 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {Card, Typography, Button, Row, Col} from 'antd'
 import styles from './dish.module.css'
-import {connect, useSelector} from 'react-redux'
 import {addToCart, removeFromCart} from '../../store/action-creators'
-import {selectAmountFromCart, selectDish} from '../../store/selectors'
+import {connect} from 'react-redux'
 
 function Dish(props) {
   const {
-    id,
+    dish,
 
     // from store
     amount,
@@ -16,12 +15,8 @@ function Dish(props) {
     decrease,
   } = props
 
-  const selectDishMemo = useCallback(state => selectDish(state, props), [props])
-
-  const dish = useSelector(selectDishMemo)
-
   return (
-    <Card className={styles.productDetailedOrderCard}>
+    <Card data-automation-id="DISH" className={styles.productDetailedOrderCard}>
       <Row type="flex" justify="space-between">
         <Col xs={16} md={16} lg={20} align="left">
           <Typography.Title
@@ -62,27 +57,26 @@ function Dish(props) {
   )
 }
 
-export const DishProps = {
-  id: PropTypes.string.isRequired,
+export const DishPropTypes = {
+  id: PropTypes.string,
   dish: PropTypes.shape({
     id: PropTypes.string.isRequired,
-    name: PropTypes.string,
-    ingredients: PropTypes.arrayOf(PropTypes.string),
-    price: PropTypes.number,
+    ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
   }),
 }
 
-Dish.propTypes = DishProps
+Dish.propTypes = DishPropTypes
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    amount: selectAmountFromCart(state, ownProps),
-  }
-}
+const mapsStateToProps = (state, ownProps) => ({
+  amount: state.cart[ownProps.id] || 0,
+  dish: state.dishes[ownProps.id],
+})
 
 const mapDispatchToProps = {
   increase: addToCart,
   decrease: removeFromCart,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dish)
+export default connect(mapsStateToProps, mapDispatchToProps)(Dish)

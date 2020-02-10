@@ -1,22 +1,38 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import PropTypes from 'prop-types'
-import Restaurant, {RestaurantProps} from '../restaurant'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import Restaurant from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
 import {connect} from 'react-redux'
-import {selectRestaurantList} from '../../store/selectors'
+import {selectRestaurants} from '../../store/selectors'
+import {fetchRestaurants} from '../../store/action-creators'
 
 function Restaurants(props) {
-  const [currentId, setCurrentId] = useState(props.restaurants[0].id)
+  const [currentId, setCurrentId] = useState(null)
 
-  const restaurant = useMemo(() => {
-    return props.restaurants.find(restaurant => restaurant.id === currentId)
-  }, [currentId, props.restaurants])
+  useEffect(() => {
+    props.fetchRestaurants && props.fetchRestaurants()
+  }, [])
 
+  const restaurant = props.restaurants.find(
+    restaurant => restaurant.id === currentId
+  )
   const handleRestaurantChange = useCallback(id => setCurrentId(id), [
     setCurrentId,
   ])
+
+  useEffect(() => {
+    if (props.restaurants.length === 0) {
+      return
+    }
+    setCurrentId(currentId || props.restaurants[0].id)
+  }, [props.restaurants.length])
+
+  if (props.restaurants.length === 0 || !currentId) {
+    return <h1>Loading...</h1>
+  }
+
   return (
-    <div>
+    <div data-automation-id="RESTAURANTS">
+      <input type={'text'} />
       <RestaurantsNavigation
         restaurants={props.restaurants}
         onRestaurantChange={handleRestaurantChange}
@@ -26,12 +42,12 @@ function Restaurants(props) {
   )
 }
 
-Restaurants.propTypes = {
-  restaurants: PropTypes.arrayOf(PropTypes.shape(RestaurantProps.restaurant)),
-}
-
 const mapStateToProps = state => ({
-  restaurants: selectRestaurantList(state),
+  restaurants: selectRestaurants(state),
 })
 
-export default connect(mapStateToProps)(Restaurants)
+const mapDispatchToProps = {
+  fetchRestaurants,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Restaurants)

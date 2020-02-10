@@ -1,15 +1,34 @@
 import {Button, Card, Col, Form, Input, Row, Typography, Rate} from 'antd'
-import React from 'react'
+import React, {useState} from 'react'
+import useInput from '../../custom-hooks/use-input'
 import cx from 'classnames'
 
 import styles from './review-form.module.css'
+import {useDispatch} from 'react-redux'
+import {addReview} from '../../store/action-creators'
 
 const ReviewForm = ({id}) => {
-  const handleSubmit = event => {
-    event.preventDefault()
-    event.persist()
-    console.log('Submit', event)
+  const [rating, setRating] = useState(0)
+  const [name, setName, isValidName, resetName] = useInput()
+  const [text, setText, isValidText, resetText] = useInput()
+  const dispatch = useDispatch()
+
+  const resetForm = () => {
+    resetName()
+    resetText()
+    setRating(null)
   }
+  const handleSubmit = ev => {
+    ev.preventDefault()
+    dispatch(addReview(name, +rating, text, id))
+    resetForm()
+  }
+
+  const handleNameChange = setName
+
+  const handleTextChange = setText
+
+  const handleRatingChange = setRating
 
   return (
     <Card className={styles.reviewForm}>
@@ -19,10 +38,28 @@ const ReviewForm = ({id}) => {
             Leave your review
           </Typography.Title>
           <Form onSubmit={handleSubmit}>
-            <Input placeholder="Your name" className={cx(styles.inputName)} />
-            <Input.TextArea rows={3} size="large" />
+            <Input
+              value={name}
+              onChange={handleNameChange}
+              placeholder="Your name"
+              className={cx(
+                {
+                  [styles.invalid]: !isValidName,
+                },
+                styles.inputName
+              )}
+            />
+            <Input.TextArea
+              value={text}
+              onChange={handleTextChange}
+              rows={3}
+              size="large"
+              className={cx({
+                [styles.invalid]: !isValidText,
+              })}
+            />
             <div>
-              Rating: <Rate value={0} />
+              Rating: <Rate value={rating} onChange={handleRatingChange} />
             </div>
             <Button htmlType="submit" className={styles.submitButton}>
               PUBLISH REVIEW

@@ -3,19 +3,19 @@ import cx from 'classnames'
 import React from 'react'
 import {TransitionGroup, CSSTransition} from 'react-transition-group'
 
-import styles from './order.module.css'
+import styles from './cart.module.css'
 import CartRow from './cart-row'
 import CartItem from './cart-item'
 import {connect} from 'react-redux'
-import './order.css'
-import {selectCartInfo} from '../../store/selectors'
+import './cart.css'
+import {selectOrderedDishes} from '../../store/selectors'
 
-function Order({className, orderedDishes}) {
+function Cart({className, orderedDishes}) {
   const {dishes, totalPrice} = orderedDishes
   if (dishes.length === 0) {
     return null
   }
-  console.log('Order render', className, orderedDishes)
+  console.log('Cart render')
   return (
     <div className={cx(styles.cart, className)}>
       <TransitionGroup>
@@ -46,6 +46,8 @@ function Order({className, orderedDishes}) {
   )
 }
 
-export default connect(state => ({
-  orderedDishes: selectCartInfo(state).orderedDishes,
-}))(Order)
+export default connect(state => {
+  return {
+    orderedDishes: selectOrderedDishes(state),
+  }
+})(Cart)

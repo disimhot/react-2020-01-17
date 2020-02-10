@@ -1,2 +1,2 @@
-export {default} from './dish'
 export * from './dish'
+export {default} from './dish'
