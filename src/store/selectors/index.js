@@ -1,23 +1,44 @@
 import {createSelector} from 'reselect'
 
-export const selectRestaurants = state => state.restaurants
+export const selectId = (state, ownProps) => ownProps.id
 
 export const selectCart = state => state.cart
 
-export const selectDishesMap = store => store.dishes
+export const selectRestaurants = state => state.restaurants.entities
 
-export const selectReviewsMap = store => store.reviews.toJS()
+export const selectRestaurantsLoading = state => state.restaurants.loading
 
-export const selectUsersMap = store => store.users
+export const selectRestaurantsLoaded = state => state.restaurants.loaded
+
+export const selectDishesMap = state => state.dishes.entities
+
+export const selectDishesLoading = state => state.dishes.loading
+
+export const selectDishesLoaded = state => state.dishes.loaded
+
+export const selectReviewsImmutable = state => state.reviews.get('entities')
+
+export const selectReviewsMap = createSelector(
+  selectReviewsImmutable,
+  reviewsImmutable => reviewsImmutable.toJS()
+)
+
+export const selectReviewsLoading = state => state.reviews.get('loading')
+
+export const selectReviewsLoaded = state => state.reviews.get('loaded')
+
+export const selectUsersMap = state => state.users.entities
+
+export const selectUsersLoading = state => state.users.loading
+
+export const selectUsersLoaded = state => state.users.loaded
 
 export const selectUserList = createSelector(selectUsersMap, usersMap =>
   Object.values(usersMap)
 )
 
-export const selectId = (_, ownProps) => ownProps.id
-
 export const selectDishes = createSelector(selectDishesMap, dishesMap =>
-  Object.values(dishesMap)
+  Object.values(dishesMap.entities)
 )
 
 export const selectOrderedDishes = createSelector(
@@ -63,8 +84,8 @@ export const selectReviews = createSelector(
   selectId,
   (reviews, restaurants, id) => {
     const restaurant = restaurants.find(item => item.id === id)
-    return restaurant
-      ? restaurant.reviews.map(reviewId => reviews[reviewId])
+    return restaurant && Object.values(restaurant).length > 0
+      ? restaurant.reviews.map(reviewId => reviews[reviewId]).filter(Boolean)
       : []
   }
 )

@@ -2,12 +2,16 @@ import {
   ADD_REVIEW,
   ADD_TO_CART,
   DECREMENT,
+  FAIL,
   FETCH_DISHES,
   FETCH_RESTAURANTS,
+  FETCH_REVIEWS,
+  FETCH_USERS,
   INCREMENT,
   REMOVE_FROM_CART,
+  START,
+  SUCCESS,
 } from '../common'
-import {selectDishes} from '../selectors'
 
 export const increment = () => {
   return {
@@ -56,17 +60,32 @@ export const fetchRestaurants = () => ({
   callAPI: '/api/restaurants',
 })
 
+export const fetchUsers = () => ({
+  type: FETCH_USERS,
+  callAPI: '/api/users',
+})
+
+export const fetchReviews = () => ({
+  type: FETCH_REVIEWS,
+  callAPI: '/api/reviews',
+})
+
 export const fetchDishes = () => (dispatch, getState) => {
-  if (selectDishes(getState()).length > 0) {
-    return
-  }
+  dispatch({
+    type: FETCH_DISHES + START,
+  })
   fetch('/api/dishes')
     .then(res => res.json())
-    .then(data => {
+    .then(res =>
       dispatch({
-        type: FETCH_DISHES,
-        response: data,
+        type: FETCH_DISHES + SUCCESS,
+        response: res,
+      })
+    )
+    .catch(error => {
+      dispatch({
+        type: FETCH_DISHES + FAIL,
+        error,
       })
     })
-    .catch(e => console.warn(e))
 }
