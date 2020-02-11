@@ -5,8 +5,9 @@ import Header from '../header'
 import './app.css'
 import {store} from '../../store'
 import {Provider} from 'react-redux'
-import {BrowserRouter, Route} from 'react-router-dom'
-import Counter from '../counter'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import CounterPage from '../routes/counter'
+import RestaurantsPage from '../routes/restaurants'
 
 class App extends Component {
   render() {
@@ -17,11 +18,18 @@ class App extends Component {
             <Layout>
               <Header />
               <Layout.Content>
-                <Route path={'/counter/:initialValue'} component={Counter} />
-                <Route
-                  path={'/restaurant/:currentId'}
-                  render={props => <Restaurants />}
-                />
+                <Switch>
+                  <Route
+                    path={'/counter/:initialValue'}
+                    component={CounterPage}
+                  />
+                  <Route
+                    path={'/restaurant/:currentId'}
+                    exact
+                    render={props => <RestaurantsPage />}
+                  />
+                  <Route path={'/'} render={() => <h1>Page Not Found</h1>} />
+                </Switch>
               </Layout.Content>
             </Layout>
           </div>
