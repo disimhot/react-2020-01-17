@@ -32,10 +32,6 @@ export const DishesPropTypes = {
 Dishes.propTypes = DishesPropTypes
 
 export default connect(
-  state => ({
-    dishesLoaded: selectDishes(state).length > 0,
-  }),
-  {
-    fetchDishes,
-  }
+  state => ({dishesLoaded: selectDishes(state).length > 0}),
+  {fetchDishes}
 )(Dishes)
