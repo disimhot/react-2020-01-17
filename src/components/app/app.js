@@ -19,11 +19,8 @@ class App extends Component {
               <Layout.Content>
                 <Route path={'/counter/:initialValue'} component={Counter} />
                 <Route
-                  path={'/restaurant/:currentId/:foo'}
-                  render={props => {
-                    console.log('😄 render props', props)
-                    return <Restaurants />
-                  }}
+                  path={'/restaurant/:currentId'}
+                  render={props => <Restaurants />}
                 />
               </Layout.Content>
             </Layout>
