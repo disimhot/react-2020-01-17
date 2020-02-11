@@ -60,10 +60,25 @@ export const fetchRestaurants = () => ({
   callAPI: '/api/restaurants',
 })
 
-export const fetchUsers = () => ({
-  type: FETCH_USERS,
-  callAPI: '/api/users',
-})
+export const fetchUsers = () => (dispatch, getState) => {
+  dispatch({
+    type: FETCH_USERS + START,
+  })
+  fetch('/api/users')
+    .then(res => res.json())
+    .then(res =>
+      dispatch({
+        type: FETCH_USERS + SUCCESS,
+        response: res,
+      })
+    )
+    .catch(error => {
+      dispatch({
+        type: FETCH_USERS + FAIL,
+        error,
+      })
+    })
+}
 
 export const fetchReviews = () => ({
   type: FETCH_REVIEWS,

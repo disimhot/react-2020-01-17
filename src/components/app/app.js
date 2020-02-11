@@ -5,22 +5,28 @@ import Header from '../header'
 import './app.css'
 import {store} from '../../store'
 import {Provider} from 'react-redux'
-// import Counter from '../counter'
+import {BrowserRouter, Route} from 'react-router-dom'
+import Counter from '../counter'
 
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <div>
-          <Layout>
-            <Header />
-            {/*<Counter />*/}
-            <Layout.Content>
-              <Restaurants />
-            </Layout.Content>
-          </Layout>
-        </div>
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <div>
+            <Layout>
+              <Header />
+              <Layout.Content>
+                <Route path={'/counter'} component={Counter} />
+                <Route
+                  path={'/restaurants'}
+                  render={props => <Restaurants />}
+                />
+              </Layout.Content>
+            </Layout>
+          </div>
+        </Provider>
+      </BrowserRouter>
     )
   }
 }
