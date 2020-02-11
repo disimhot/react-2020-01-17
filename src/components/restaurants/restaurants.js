@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import Restaurant from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
 import {connect} from 'react-redux'
@@ -9,6 +9,7 @@ import {
 } from '../../store/selectors'
 import {fetchRestaurants} from '../../store/action-creators'
 import Loader from '../loader'
+import {useParams} from 'react-router-dom'
 
 function Restaurants({
   restaurants,
@@ -16,23 +17,11 @@ function Restaurants({
   restaurantsLoaded,
   fetchRestaurants,
 }) {
-  const [currentId, setCurrentId] = useState(
-    restaurants.length ? restaurants[0].id : ''
-  )
-
-  useEffect(() => {
-    if (currentId === '' && restaurants.length > 0) {
-      setCurrentId(restaurants[0].id)
-    }
-  }, [restaurants, currentId])
+  const {currentId} = useParams()
 
   useEffect(() => {
     !restaurantsLoading && !restaurantsLoaded && fetchRestaurants()
   }, [fetchRestaurants, restaurantsLoading, restaurantsLoaded])
-
-  const handleRestaurantChange = useCallback(id => setCurrentId(id), [
-    setCurrentId,
-  ])
 
   if (restaurantsLoading) {
     return <Loader />
@@ -42,10 +31,7 @@ function Restaurants({
 
   return (
     <div data-automation-id="RESTAURANTS">
-      <RestaurantsNavigation
-        restaurants={restaurants}
-        onRestaurantChange={handleRestaurantChange}
-      />
+      <RestaurantsNavigation restaurants={restaurants} />
       <Restaurant restaurant={restaurant} />
     </div>
   )

@@ -17,10 +17,13 @@ class App extends Component {
             <Layout>
               <Header />
               <Layout.Content>
-                <Route path={'/counter'} component={Counter} />
+                <Route path={'/counter/:initialValue'} component={Counter} />
                 <Route
-                  path={'/restaurants'}
-                  render={props => <Restaurants />}
+                  path={'/restaurant/:currentId/:foo'}
+                  render={props => {
+                    console.log('😄 render props', props)
+                    return <Restaurants />
+                  }}
                 />
               </Layout.Content>
             </Layout>
