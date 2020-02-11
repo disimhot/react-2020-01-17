@@ -7,8 +7,9 @@ import {
   INCREMENT,
   REMOVE_FROM_CART,
   FETCH_REVIEWS,
+  FETCH_USERS,
 } from '../common'
-import {selectDishes} from '../selectors'
+import {selectDishes, selectUserList} from '../selectors'
 
 export const increment = () => {
   return {
@@ -59,7 +60,7 @@ export const fetchRestaurants = () => ({
 
 export const fetchReviews = () => ({
   type: FETCH_REVIEWS,
-  callAPI: '/api/restaurants',
+  callAPI: '/api/reviews',
 })
 
 export const fetchDishes = () => (dispatch, getState) => {
@@ -71,6 +72,21 @@ export const fetchDishes = () => (dispatch, getState) => {
     .then(data => {
       dispatch({
         type: FETCH_DISHES,
+        response: data,
+      })
+    })
+    .catch(e => console.warn(e))
+}
+
+export const fetchUsers = () => (dispatch, getState) => {
+  if (selectUserList(getState()).length > 0) {
+    return
+  }
+  fetch('/api/users')
+    .then(res => res.json())
+    .then(data => {
+      dispatch({
+        type: FETCH_USERS,
         response: data,
       })
     })

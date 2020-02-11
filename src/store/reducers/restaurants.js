@@ -15,6 +15,6 @@ export const restaurantsReducer = (restaurantsState = [], action) =>
         break
       }
       default:
-        return
+        return restaurantsState
     }
   })

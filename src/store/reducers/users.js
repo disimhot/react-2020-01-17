@@ -1,12 +1,11 @@
-import {normalizedUsers} from '../../fixtures'
 import {arrayToMap} from '../utils'
-import {ADD_REVIEW} from '../common'
+import {ADD_REVIEW, FETCH_USERS} from '../common'
 
-export const usersReducer = (
-  usersState = arrayToMap(normalizedUsers),
-  action
-) => {
+export const usersReducer = (usersState = {}, action) => {
   switch (action.type) {
+    case FETCH_USERS: {
+      return arrayToMap(action.response)
+    }
     case ADD_REVIEW: {
       if (!usersState[action.userId]) {
         return {

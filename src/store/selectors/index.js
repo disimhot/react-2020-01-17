@@ -10,11 +10,11 @@ export const selectReviewsMap = store => store.reviews
 
 export const selectUsersMap = store => store.users
 
+export const selectId = (_, ownProps) => ownProps.id
+
 export const selectUserList = createSelector(selectUsersMap, usersMap =>
   Object.values(usersMap)
 )
-
-export const selectId = (_, ownProps) => ownProps.id
 
 export const selectDishes = createSelector(selectDishesMap, dishesMap =>
   Object.values(dishesMap)
@@ -63,10 +63,16 @@ export const selectReviews = createSelector(
   selectId,
   (reviews, restaurants, id) => {
     const restaurant = restaurants.find(item => item.id === id)
+
     return restaurant
       ? restaurant.reviews.map(reviewId => reviews[reviewId])
       : []
   }
+)
+
+export const selectReviewsLoaded = createSelector(
+  selectReviewsMap,
+  reviews => Object.keys(reviews).length > 0
 )
 
 export const selectAverageRating = createSelector(selectReviews, reviews => {
@@ -76,3 +82,8 @@ export const selectAverageRating = createSelector(selectReviews, reviews => {
     }, 0) / reviews.length
   return Math.floor(rawRating * 2) / 2
 })
+
+export const selectUsersLoaded = createSelector(
+  selectUsersMap,
+  users => Object.keys(users).length > 0
+)
