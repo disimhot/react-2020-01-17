@@ -5,11 +5,13 @@ import {Col, Row} from 'antd'
 import ReviewForm from '../review-form'
 import {connect} from 'react-redux'
 import {selectReviews} from '../../store/selectors'
+import {fetchReviews} from '../../store/selectors'
 
 class Reviews extends Component {
-  static defaultProps = {
-    reviews: [],
+  componentDidMount() {
+    this.props.fetchReviews && this.props.fetchReviews()
   }
+
   render() {
     const {reviews, id} = this.props
     return (
@@ -31,10 +33,11 @@ export const ReviewsPropTypes = {
 
 Review.propTypes = ReviewsPropTypes
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    reviews: selectReviews(state, ownProps),
-  }
-}
+//const mapStateToProps =
 
-export default connect(mapStateToProps)(Reviews)
+export default connect(
+  (state, ownProps) => ({
+    reviews: selectReviews(state, ownProps),
+  }),
+  {fetchReviews}
+)(Reviews)

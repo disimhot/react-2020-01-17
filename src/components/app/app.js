@@ -6,6 +6,7 @@ import './app.css'
 import {store} from '../../store'
 import {Provider} from 'react-redux'
 import Counter from '../counter'
+import PropTypes from 'prop-types'
 
 class App extends Component {
   static propTypes = {
