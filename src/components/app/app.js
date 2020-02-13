@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Restaurants from '../restaurants'
+import PropTypes from 'prop-types'
 import {Layout} from 'antd'
 import Header from '../header'
 import './app.css'
@@ -8,6 +8,8 @@ import {Provider} from 'react-redux'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import CounterPage from '../routes/counter'
 import RestaurantsPage from '../routes/restaurants'
+import CartPage from '../routes/cart'
+import ThankYouPage from '../routes/thankyou'
 
 class App extends Component {
   static propTypes = {
@@ -32,6 +34,8 @@ class App extends Component {
                     exact
                     render={props => <RestaurantsPage />}
                   />
+                  <Route path={'/cart'} exact component={CartPage} />
+                  <Route path={'/thankyou'} exact component={ThankYouPage} />
                   <Route path={'/'} render={() => <h1>Page Not Found</h1>} />
                 </Switch>
               </Layout.Content>

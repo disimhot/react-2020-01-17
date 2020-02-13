@@ -3,18 +3,22 @@ import PropTypes from 'prop-types'
 import {Badge, Button} from 'antd'
 import './cart-badge.css'
 import {connect} from 'react-redux'
+import {NavLink} from 'react-router-dom'
 import {selectCart} from '../../store/selectors'
 
 function CartBadge(props) {
+  const isEmpty = !props.totalAmount
   return (
-    <Badge count={props.totalAmount} className={'cart-button-container'}>
-      <Button
-        icon="shopping-cart"
-        size="large"
-        type="primary"
-        className="cart-button"
-      />
-    </Badge>
+    <NavLink to={`/cart`} disabled={isEmpty}>
+      <Badge count={props.totalAmount} className={'cart-button-container'}>
+        <Button
+          icon="shopping-cart"
+          size="large"
+          type="primary"
+          className="cart-button"
+        />
+      </Badge>
+    </NavLink>
   )
 }
 

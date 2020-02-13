@@ -1,11 +1,8 @@
-import {ADD_TO_CART, REMOVE_FROM_CART} from '../common'
+import {ADD_TO_CART, REMOVE_FROM_CART, EMPTY_CART} from '../common'
 
-export const cartReducer = (
-  cartState = {
-    //  id: <dish's amount>
-  },
-  action
-) => {
+const initialState = {}
+
+export const cartReducer = (cartState = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART: {
       const {id} = action.payload
@@ -23,6 +20,9 @@ export const cartReducer = (
         ...cartState,
         [id]: cartState[id] - 1,
       }
+    }
+    case EMPTY_CART: {
+      return initialState
     }
     default: {
       return cartState

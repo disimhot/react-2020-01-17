@@ -11,6 +11,7 @@ import {
   REMOVE_FROM_CART,
   START,
   SUCCESS,
+  EMPTY_CART,
 } from '../common'
 
 export const increment = () => {
@@ -22,6 +23,12 @@ export const increment = () => {
 export const decrement = () => {
   return {
     type: DECREMENT,
+  }
+}
+
+export const emptyCart = () => {
+  return {
+    type: EMPTY_CART,
   }
 }
 
