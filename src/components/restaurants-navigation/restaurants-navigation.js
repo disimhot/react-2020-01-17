@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import styles from './restaurants-navigation.module.css'
 import PropTypes from 'prop-types'
+import {NavLink} from 'react-router-dom'
 
 class RestaurantsNavigation extends Component {
   static propTypes = {
@@ -14,14 +15,15 @@ class RestaurantsNavigation extends Component {
     return (
       <div className={styles.list}>
         {restaurants.map(({id, name}) => (
-          <span
+          <NavLink
             className={styles.restaurant}
             key={id}
-            onClick={() => onRestaurantChange(id)}
+            to={`/restaurant/${id}`}
             data-automation-id={`RESTAURANT_NAVIGATION_${id}`}
+            activeClassName={styles.active}
           >
             {name}
-          </span>
+          </NavLink>
         ))}
       </div>
     )

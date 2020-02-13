@@ -3,17 +3,25 @@ import PropTypes from 'prop-types'
 import {Card, Typography, Button, Row, Col} from 'antd'
 import styles from './dish.module.css'
 import {addToCart, removeFromCart} from '../../store/action-creators'
-import {connect} from 'react-redux'
+import {connect, useSelector} from 'react-redux'
+import {selectDishesMap} from '../../store/selectors'
 
 function Dish(props) {
   const {
-    dish,
+    id,
 
     // from store
     amount,
     increase,
     decrease,
   } = props
+
+  const dishes = useSelector(state => selectDishesMap(state))
+  const dish = dishes[id]
+
+  if (!dish) {
+    return null
+  }
 
   return (
     <Card data-automation-id="DISH" className={styles.productDetailedOrderCard}>

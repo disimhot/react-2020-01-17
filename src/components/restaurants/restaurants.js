@@ -1,42 +1,37 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useEffect} from 'react'
 import Restaurant from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
 import {connect} from 'react-redux'
-import {selectRestaurants} from '../../store/selectors'
+import {
+  selectRestaurants,
+  selectRestaurantsLoaded,
+  selectRestaurantsLoading,
+} from '../../store/selectors'
 import {fetchRestaurants} from '../../store/action-creators'
+import Loader from '../loader'
+import {useParams} from 'react-router-dom'
 
-function Restaurants(props) {
-  const [currentId, setCurrentId] = useState(null)
-
-  useEffect(() => {
-    props.fetchRestaurants && props.fetchRestaurants()
-  }, [])
-
-  const restaurant = props.restaurants.find(
-    restaurant => restaurant.id === currentId
-  )
-  const handleRestaurantChange = useCallback(id => setCurrentId(id), [
-    setCurrentId,
-  ])
+function Restaurants({
+  restaurants,
+  restaurantsLoading,
+  restaurantsLoaded,
+  fetchRestaurants,
+}) {
+  const {currentId} = useParams()
 
   useEffect(() => {
-    if (props.restaurants.length === 0) {
-      return
-    }
-    setCurrentId(currentId || props.restaurants[0].id)
-  }, [props.restaurants.length])
+    !restaurantsLoading && !restaurantsLoaded && fetchRestaurants()
+  }, [fetchRestaurants, restaurantsLoading, restaurantsLoaded])
 
-  if (props.restaurants.length === 0 || !currentId) {
-    return <h1>Loading...</h1>
+  if (restaurantsLoading) {
+    return <Loader />
   }
+
+  const restaurant = restaurants.find(restaurant => restaurant.id === currentId)
 
   return (
     <div data-automation-id="RESTAURANTS">
-      <input type={'text'} />
-      <RestaurantsNavigation
-        restaurants={props.restaurants}
-        onRestaurantChange={handleRestaurantChange}
-      />
+      <RestaurantsNavigation restaurants={restaurants} />
       <Restaurant restaurant={restaurant} />
     </div>
   )
@@ -44,6 +39,8 @@ function Restaurants(props) {
 
 const mapStateToProps = state => ({
   restaurants: selectRestaurants(state),
+  restaurantsLoading: selectRestaurantsLoading(state),
+  restaurantsLoaded: selectRestaurantsLoaded(state),
 })
 
 const mapDispatchToProps = {
