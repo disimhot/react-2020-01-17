@@ -13,7 +13,12 @@ import {
   START,
   SUCCESS,
 } from '../common'
-import {selectCart} from '../selectors'
+import {
+  selectCart,
+  selectRestaurants,
+  selectRestaurantsLoaded,
+} from '../selectors'
+import {push, replace} from 'connected-react-router'
 
 export const increment = () => {
   return {
@@ -102,5 +107,18 @@ export const sendOrder = details => (dispatch, getState) => {
       ...details,
     },
   })
-  window.location.href = '/order-complete'
+  dispatch(push('/order-complete'))
+}
+
+export const validateRestaurant = id => (dispatch, getState) => {
+  const state = getState()
+  const isLoaded = selectRestaurantsLoaded(state)
+  if (!isLoaded) {
+    return
+  }
+  const restaurants = selectRestaurants(state)
+  const targetRestaurant = restaurants.find(restaurant => restaurant.id === id)
+  if (!targetRestaurant) {
+    dispatch(replace('/404'))
+  }
 }
