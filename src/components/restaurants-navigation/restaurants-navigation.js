@@ -1,24 +1,19 @@
 import React, {Component} from 'react'
 import styles from './restaurants-navigation.module.css'
 import {NavLink} from 'react-router-dom'
+import {Menu, MenuItem} from '../menu'
 
 class RestaurantsNavigation extends Component {
   render() {
     const {restaurants} = this.props
     return (
-      <div className={styles.list}>
+      <Menu>
         {restaurants.map(({id, name}) => (
-          <NavLink
-            className={styles.restaurant}
-            key={id}
-            data-automation-id={`RESTAURANT_NAVIGATION_${id}`}
-            to={`/restaurant/${id}`}
-            activeClassName={styles.activeLink}
-          >
+          <MenuItem key={id} id={id}>
             {name}
-          </NavLink>
+          </MenuItem>
         ))}
-      </div>
+      </Menu>
     )
   }
 }
