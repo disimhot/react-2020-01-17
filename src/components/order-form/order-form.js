@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Input, Button, Form} from 'antd'
 import {connect} from 'react-redux'
 import {sendOrder} from '../../store/action-creators'
+import {Consumer} from '../../contexts/user'
 
 class OrderForm extends Component {
   state = {
@@ -17,13 +18,24 @@ class OrderForm extends Component {
       >
         <h1 ref={this.setRefForSomeHTMLElement}>{'Form'}</h1>
         <Form.Item>
-          <Input
-            ref={this.setInput}
-            placeholder={'User name'}
-            value={this.state.userName}
-            onChange={this.handleUserNameInputChange}
-            style={{width: '120px'}}
-          />
+          <Consumer>
+            {({name, handleUserChange}) => {
+              return (
+                <Input
+                  ref={this.setInput}
+                  placeholder={'User name'}
+                  value={name}
+                  onChange={event => {
+                    handleUserChange({
+                      name: event.target.value,
+                    })
+                    this.handleUserNameInputChange(event)
+                  }}
+                  style={{width: '120px'}}
+                />
+              )
+            }}
+          </Consumer>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">

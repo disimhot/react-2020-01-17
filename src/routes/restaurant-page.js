@@ -8,7 +8,7 @@ import {fetchRestaurants} from '../store/action-creators'
 function RestaurantPage(props) {
   useEffect(() => {
     !props.firstRestaurant && props.fetchRestaurants()
-  }, [props.firstRestaurant])
+  }, [props])
 
   if (props.match.isExact && props.firstRestaurant) {
     return <Redirect to={`/restaurant/${props.firstRestaurant.id}`} />

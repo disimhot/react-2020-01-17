@@ -1,4 +1,5 @@
 import React from 'react'
+import {Consumer as UserConsumer} from '../contexts/user'
 
 function OrderComplete() {
   return (
@@ -8,7 +9,7 @@ function OrderComplete() {
         padding: '128px 0',
       }}
     >
-      {'Thanks'}
+      <UserConsumer>{user => 'Thanks, ' + user.name}</UserConsumer>
       <span
         role={'img'}
         aria-label={'cook'}

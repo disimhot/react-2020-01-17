@@ -24,7 +24,7 @@ function Restaurants({
 
   useEffect(() => {
     dispatch(validateRestaurant(restaurantId))
-  }, [restaurantsLoaded, restaurantId])
+  }, [restaurantsLoaded, restaurantId, dispatch])
 
   if (restaurantsLoading) {
     return <Loader />
