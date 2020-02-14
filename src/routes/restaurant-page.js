@@ -2,13 +2,14 @@ import React, {useEffect} from 'react'
 import {Route, Redirect} from 'react-router-dom'
 import Restaurants from '../components/restaurants/restaurants'
 import {selectFirstRestaurant} from '../store/selectors'
-import {connect, useDispatch} from 'react-redux'
+import {connect} from 'react-redux'
 import {fetchRestaurants} from '../store/action-creators'
 
 function RestaurantPage(props) {
   useEffect(() => {
     !props.firstRestaurant && props.fetchRestaurants()
   }, [props.firstRestaurant])
+
   if (props.match.isExact && props.firstRestaurant) {
     return <Redirect to={`/restaurant/${props.firstRestaurant.id}`} />
   }
