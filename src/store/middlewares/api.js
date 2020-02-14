@@ -7,7 +7,7 @@ export default store => next => action => {
     return next(rest)
   }
 
-  next({
+  store.dispatch({
     ...rest,
     type: action.type + START,
   })
@@ -21,7 +21,7 @@ export default store => next => action => {
       })
     )
     .catch(e => {
-      next({
+      store.dispatch({
         ...rest,
         type: action.type + FAIL,
         error: e,

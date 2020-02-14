@@ -1,40 +1,36 @@
 import React, {Component} from 'react'
-import Restaurants from '../restaurants'
 import {Layout} from 'antd'
 import Header from '../header'
 import './app.css'
 import {store} from '../../store'
 import {Provider} from 'react-redux'
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
-import CounterPage from '../routes/counter'
-import RestaurantsPage from '../routes/restaurants'
+import RestaurantPage from '../../routes/restaurant-page'
+import CounterPage from '../../routes/counter-page'
+import OrderPage from '../../routes/order-page'
+import OrderComplete from '../../routes/order-complete'
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Provider store={store}>
+      <Provider store={store}>
+        <BrowserRouter>
           <div>
             <Layout>
               <Header />
               <Layout.Content>
                 <Switch>
-                  <Route
-                    path={'/counter/:initialValue'}
-                    component={CounterPage}
-                  />
-                  <Route
-                    path={'/restaurant/:currentId'}
-                    exact
-                    render={props => <RestaurantsPage />}
-                  />
-                  <Route path={'/'} render={() => <h1>Page Not Found</h1>} />
+                  <Route path="/counter" exact strict component={CounterPage} />
+                  <Route path="/restaurant" component={RestaurantPage} />
+                  <Route path="/order" component={OrderPage} />
+                  <Route path="/order-complete" component={OrderComplete} />
+                  <Route path="/" render={() => <h1>Page not found</h1>} />
                 </Switch>
               </Layout.Content>
             </Layout>
           </div>
-        </Provider>
-      </BrowserRouter>
+        </BrowserRouter>
+      </Provider>
     )
   }
 }

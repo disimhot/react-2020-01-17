@@ -9,16 +9,14 @@ import {
 } from '../../store/selectors'
 import {fetchRestaurants} from '../../store/action-creators'
 import Loader from '../loader'
-import {useParams} from 'react-router-dom'
 
 function Restaurants({
+  restaurantId,
   restaurants,
   restaurantsLoading,
   restaurantsLoaded,
   fetchRestaurants,
 }) {
-  const {currentId} = useParams()
-
   useEffect(() => {
     !restaurantsLoading && !restaurantsLoaded && fetchRestaurants()
   }, [fetchRestaurants, restaurantsLoading, restaurantsLoaded])
@@ -27,7 +25,9 @@ function Restaurants({
     return <Loader />
   }
 
-  const restaurant = restaurants.find(restaurant => restaurant.id === currentId)
+  const restaurant = restaurants.find(
+    restaurant => restaurant.id === restaurantId
+  )
 
   return (
     <div data-automation-id="RESTAURANTS">

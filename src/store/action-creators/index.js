@@ -9,9 +9,11 @@ import {
   FETCH_USERS,
   INCREMENT,
   REMOVE_FROM_CART,
+  SEND_ORDER,
   START,
   SUCCESS,
 } from '../common'
+import {selectCart} from '../selectors'
 
 export const increment = () => {
   return {
@@ -60,25 +62,10 @@ export const fetchRestaurants = () => ({
   callAPI: '/api/restaurants',
 })
 
-export const fetchUsers = () => (dispatch, getState) => {
-  dispatch({
-    type: FETCH_USERS + START,
-  })
-  fetch('/api/users')
-    .then(res => res.json())
-    .then(res =>
-      dispatch({
-        type: FETCH_USERS + SUCCESS,
-        response: res,
-      })
-    )
-    .catch(error => {
-      dispatch({
-        type: FETCH_USERS + FAIL,
-        error,
-      })
-    })
-}
+export const fetchUsers = () => ({
+  type: FETCH_USERS,
+  callAPI: '/api/users',
+})
 
 export const fetchReviews = () => ({
   type: FETCH_REVIEWS,
@@ -103,4 +90,17 @@ export const fetchDishes = () => (dispatch, getState) => {
         error,
       })
     })
+}
+
+export const sendOrder = details => (dispatch, getState) => {
+  const state = getState()
+  const dishes = selectCart(state)
+  dispatch({
+    type: SEND_ORDER,
+    payload: {
+      cart: dishes,
+      ...details,
+    },
+  })
+  window.location.href = '/order-complete'
 }
