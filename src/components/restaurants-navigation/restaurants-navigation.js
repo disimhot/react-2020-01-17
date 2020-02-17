@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import styles from './restaurants-navigation.module.css'
 import PropTypes from 'prop-types'
 import {Menu, MenuItem} from '../menu'
 
