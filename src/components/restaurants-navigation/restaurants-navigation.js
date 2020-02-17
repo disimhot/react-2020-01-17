@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import styles from './restaurants-navigation.module.css'
 import PropTypes from 'prop-types'
+import {Menu, MenuItem} from '../menu'
 
 class RestaurantsNavigation extends Component {
   static propTypes = {
@@ -9,21 +10,15 @@ class RestaurantsNavigation extends Component {
   }
 
   render() {
-    const {restaurants, onRestaurantChange} = this.props
-
+    const {restaurants} = this.props
     return (
-      <div className={styles.list}>
+      <Menu>
         {restaurants.map(({id, name}) => (
-          <span
-            className={styles.restaurant}
-            key={id}
-            onClick={() => onRestaurantChange(id)}
-            data-automation-id={`RESTAURANT_NAVIGATION_${id}`}
-          >
+          <MenuItem key={id} id={id}>
             {name}
-          </span>
+          </MenuItem>
         ))}
-      </div>
+      </Menu>
     )
   }
 }

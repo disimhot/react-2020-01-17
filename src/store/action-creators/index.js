@@ -2,12 +2,23 @@ import {
   ADD_REVIEW,
   ADD_TO_CART,
   DECREMENT,
+  FAIL,
   FETCH_DISHES,
   FETCH_RESTAURANTS,
+  FETCH_REVIEWS,
+  FETCH_USERS,
   INCREMENT,
   REMOVE_FROM_CART,
+  SEND_ORDER,
+  START,
+  SUCCESS,
 } from '../common'
-import {selectDishes} from '../selectors'
+import {
+  selectCart,
+  selectRestaurants,
+  selectRestaurantsLoaded,
+} from '../selectors'
+import {push, replace} from 'connected-react-router'
 
 export const increment = () => {
   return {
@@ -56,17 +67,58 @@ export const fetchRestaurants = () => ({
   callAPI: '/api/restaurants',
 })
 
+export const fetchUsers = () => ({
+  type: FETCH_USERS,
+  callAPI: '/api/users',
+})
+
+export const fetchReviews = () => ({
+  type: FETCH_REVIEWS,
+  callAPI: '/api/reviews',
+})
+
 export const fetchDishes = () => (dispatch, getState) => {
-  if (selectDishes(getState()).length > 0) {
-    return
-  }
+  dispatch({
+    type: FETCH_DISHES + START,
+  })
   fetch('/api/dishes')
     .then(res => res.json())
-    .then(data => {
+    .then(res =>
       dispatch({
-        type: FETCH_DISHES,
-        response: data,
+        type: FETCH_DISHES + SUCCESS,
+        response: res,
+      })
+    )
+    .catch(error => {
+      dispatch({
+        type: FETCH_DISHES + FAIL,
+        error,
       })
     })
-    .catch(e => console.warn(e))
+}
+
+export const sendOrder = details => (dispatch, getState) => {
+  const state = getState()
+  const dishes = selectCart(state)
+  dispatch({
+    type: SEND_ORDER,
+    payload: {
+      cart: dishes,
+      ...details,
+    },
+  })
+  dispatch(push('/order-complete'))
+}
+
+export const validateRestaurant = id => (dispatch, getState) => {
+  const state = getState()
+  const isLoaded = selectRestaurantsLoaded(state)
+  if (!isLoaded) {
+    return
+  }
+  const restaurants = selectRestaurants(state)
+  const targetRestaurant = restaurants.find(restaurant => restaurant.id === id)
+  if (!targetRestaurant) {
+    dispatch(replace('/404'))
+  }
 }

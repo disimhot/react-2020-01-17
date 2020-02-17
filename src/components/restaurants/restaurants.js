@@ -1,42 +1,42 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useEffect} from 'react'
 import Restaurant from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
-import {connect} from 'react-redux'
-import {selectRestaurants} from '../../store/selectors'
-import {fetchRestaurants} from '../../store/action-creators'
+import {connect, useDispatch} from 'react-redux'
+import {
+  selectRestaurants,
+  selectRestaurantsLoaded,
+  selectRestaurantsLoading,
+} from '../../store/selectors'
+import {fetchRestaurants, validateRestaurant} from '../../store/action-creators'
+import Loader from '../loader'
 
-function Restaurants(props) {
-  const [currentId, setCurrentId] = useState(null)
+function Restaurants({
+  restaurantId,
+  restaurants,
+  restaurantsLoading,
+  restaurantsLoaded,
+  fetchRestaurants,
+}) {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    !restaurantsLoading && !restaurantsLoaded && fetchRestaurants()
+  }, [fetchRestaurants, restaurantsLoading, restaurantsLoaded])
 
   useEffect(() => {
-    props.fetchRestaurants && props.fetchRestaurants()
-  }, [])
+    dispatch(validateRestaurant(restaurantId))
+  }, [restaurantsLoaded, restaurantId, dispatch])
 
-  const restaurant = props.restaurants.find(
-    restaurant => restaurant.id === currentId
-  )
-  const handleRestaurantChange = useCallback(id => setCurrentId(id), [
-    setCurrentId,
-  ])
-
-  useEffect(() => {
-    if (props.restaurants.length === 0) {
-      return
-    }
-    setCurrentId(currentId || props.restaurants[0].id)
-  }, [props.restaurants.length])
-
-  if (props.restaurants.length === 0 || !currentId) {
-    return <h1>Loading...</h1>
+  if (restaurantsLoading) {
+    return <Loader />
   }
+
+  const restaurant = restaurants.find(
+    restaurant => restaurant.id === restaurantId
+  )
 
   return (
     <div data-automation-id="RESTAURANTS">
-      <input type={'text'} />
-      <RestaurantsNavigation
-        restaurants={props.restaurants}
-        onRestaurantChange={handleRestaurantChange}
-      />
+      <RestaurantsNavigation restaurants={restaurants} />
       <Restaurant restaurant={restaurant} />
     </div>
   )
@@ -44,10 +44,13 @@ function Restaurants(props) {
 
 const mapStateToProps = state => ({
   restaurants: selectRestaurants(state),
+  restaurantsLoading: selectRestaurantsLoading(state),
+  restaurantsLoaded: selectRestaurantsLoaded(state),
 })
 
 const mapDispatchToProps = {
   fetchRestaurants,
+  validateRestaurant,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Restaurants)
