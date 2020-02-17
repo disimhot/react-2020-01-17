@@ -12,16 +12,26 @@ import OrderComplete from '../../routes/order-complete'
 import {ConnectedRouter} from 'connected-react-router'
 import {history} from '../../history'
 import {Provider as UserProvider} from '../../contexts/user'
+import {Provider as LanguageProvider} from '../../contexts/language'
 
 class App extends Component {
   state = {
     user: {name: ''},
+    language: LanguageProvider.language,
+    dictionary: LanguageProvider.dictionary,
   }
 
   handleUserChange = user => {
     this.setState({
       user,
     })
+  }
+
+  handleLangChange = language => {
+    this.setState(
+      language
+      //  dictionary: languageContext.dictionary[language],
+    )
   }
 
   render() {
@@ -32,36 +42,44 @@ class App extends Component {
           handleUserChange: this.handleUserChange,
         }}
       >
-        <Provider store={store}>
-          <ConnectedRouter history={history}>
-            <div>
-              <Layout>
-                <Header />
-                <Layout.Content>
-                  <Switch>
-                    <Route
-                      path="/counter"
-                      exact
-                      strict
-                      component={CounterPage}
-                    />
-                    <Route path="/restaurant" component={RestaurantPage} />
-                    <Route
-                      path="/order"
-                      render={() => (
-                        <OrderPage handleUserChange={this.handleUserChange} />
-                      )}
-                    />
-                    <Route path="/order-complete" component={OrderComplete} />
-                    <Route path="/404" render={() => <h1>404</h1>} />
-                    <Redirect from="/" exact to="restaurant" />
-                    <Route path="/" render={() => <h1>Page not found</h1>} />
-                  </Switch>
-                </Layout.Content>
-              </Layout>
-            </div>
-          </ConnectedRouter>
-        </Provider>
+        <LanguageProvider
+          value={{
+            language: this.state.language,
+            dictionary: this.state.dictionary,
+            handleLangChange: this.handleLangChange,
+          }}
+        >
+          <Provider store={store}>
+            <ConnectedRouter history={history}>
+              <div>
+                <Layout>
+                  <Header handleLangChange={this.handleLangChange} />
+                  <Layout.Content>
+                    <Switch>
+                      <Route
+                        path="/counter"
+                        exact
+                        strict
+                        component={CounterPage}
+                      />
+                      <Route path="/restaurant" component={RestaurantPage} />
+                      <Route
+                        path="/order"
+                        render={() => (
+                          <OrderPage handleUserChange={this.handleUserChange} />
+                        )}
+                      />
+                      <Route path="/order-complete" component={OrderComplete} />
+                      <Route path="/404" render={() => <h1>404</h1>} />
+                      <Redirect from="/" exact to="restaurant" />
+                      <Route path="/" render={() => <h1>Page not found</h1>} />
+                    </Switch>
+                  </Layout.Content>
+                </Layout>
+              </div>
+            </ConnectedRouter>
+          </Provider>
+        </LanguageProvider>
       </UserProvider>
     )
   }
