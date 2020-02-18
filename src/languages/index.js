@@ -6,8 +6,12 @@ export const languageOptions = [
 export const dictionaryList = {
   ru: {
     review: 'Оставьте ваш отзыв',
+    rating: 'Рейтинг',
+    publish: 'Опубликовать отзыв',
   },
   en: {
     review: 'Leave your review',
+    rating: 'Rating',
+    publish: 'Publish review',
   },
 }

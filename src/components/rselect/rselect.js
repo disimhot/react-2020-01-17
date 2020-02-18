@@ -1,10 +1,17 @@
 import React, {Component} from 'react'
 import {languageOptions} from '../../languages'
-import {Consumer as LangConsumer} from '../../contexts/language'
+import {LanguageContext} from '../../contexts/language'
+import Text from '../text'
 
 class RSelect extends Component {
-  handleChange = event => {
-    this.props.onSelectChange(event.target.value)
+  state = {
+    languageValue: '',
+  }
+
+  setLanguage = ({target: {value}}) => {
+    this.setState({
+      languageValue: value,
+    })
   }
 
   render() {
@@ -13,16 +20,25 @@ class RSelect extends Component {
         {data.name}
       </option>
     ))
-
     return (
-      <select
-        name="customSearch"
-        className="custom-search-select"
-        onChange={this.handleChange}
-      >
-        <option>Choose the language</option>
-        {options}
-      </select>
+      <LanguageContext.Consumer>
+        {({language, handleLangChange}) => (
+          <select
+            name="customSearch"
+            className="custom-search-select"
+            value={language.id}
+            onChange={event => {
+              this.setLanguage(event)
+              const selectedLanguage = languageOptions.find(
+                item => item.id === event.target.value
+              )
+              handleLangChange(selectedLanguage)
+            }}
+          >
+            {options}
+          </select>
+        )}
+      </LanguageContext.Consumer>
     )
   }
 }

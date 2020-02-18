@@ -12,13 +12,11 @@ import OrderComplete from '../../routes/order-complete'
 import {ConnectedRouter} from 'connected-react-router'
 import {history} from '../../history'
 import {Provider as UserProvider} from '../../contexts/user'
-import {Provider as LanguageProvider} from '../../contexts/language'
+import {LanguageProvider} from '../../providers/languageProvider'
 
 class App extends Component {
   state = {
     user: {name: ''},
-    language: LanguageProvider.language,
-    dictionary: LanguageProvider.dictionary,
   }
 
   handleUserChange = user => {
@@ -42,13 +40,7 @@ class App extends Component {
           handleUserChange: this.handleUserChange,
         }}
       >
-        <LanguageProvider
-          value={{
-            language: this.state.language,
-            dictionary: this.state.dictionary,
-            handleLangChange: this.handleLangChange,
-          }}
-        >
+        <LanguageProvider>
           <Provider store={store}>
             <ConnectedRouter history={history}>
               <div>

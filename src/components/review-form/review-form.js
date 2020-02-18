@@ -1,11 +1,13 @@
 import {Button, Card, Col, Form, Input, Row, Typography, Rate} from 'antd'
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import useInput from '../../custom-hooks/use-input'
 import cx from 'classnames'
 
 import styles from './review-form.module.css'
 import {useDispatch} from 'react-redux'
 import {addReview} from '../../store/action-creators'
+
+import Text from '../text'
 
 const ReviewForm = ({id}) => {
   const [rating, setRating] = useState(0)
@@ -35,7 +37,7 @@ const ReviewForm = ({id}) => {
       <Row type="flex" align="middle">
         <Col xs={24} md={18} align="left">
           <Typography.Title className={styles.addReviewTitle} level={4}>
-            Leave your review
+            <Text tid="review" />
           </Typography.Title>
           <Form onSubmit={handleSubmit}>
             <Input
@@ -59,10 +61,11 @@ const ReviewForm = ({id}) => {
               })}
             />
             <div>
-              Rating: <Rate value={rating} onChange={handleRatingChange} />
+              <Text tid="rating" />
+              <Rate value={rating} onChange={handleRatingChange} />
             </div>
             <Button htmlType="submit" className={styles.submitButton}>
-              PUBLISH REVIEW
+              <Text tid="publish" />
             </Button>
           </Form>
         </Col>

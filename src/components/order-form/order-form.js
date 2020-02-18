@@ -10,6 +10,7 @@ class OrderForm extends Component {
   }
 
   render() {
+    console.log('Consumer', Consumer)
     return (
       <Form
         layout={'inline'}
