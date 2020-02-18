@@ -10,9 +10,9 @@ export function LanguageProvider(props) {
   const provider = {
     language,
     dictionary,
-    handleLangChange: selectedLanguage => {
-      setLanguage(selectedLanguage)
-      setDictionary(dictionaryList[selectedLanguage.id])
+    handleLangChange: language => {
+      setLanguage(language)
+      setDictionary(dictionaryList[language.id])
     },
   }
 

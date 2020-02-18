@@ -26,10 +26,7 @@ class App extends Component {
   }
 
   handleLangChange = language => {
-    this.setState(
-      language
-      //  dictionary: languageContext.dictionary[language],
-    )
+    this.setState(language)
   }
 
   render() {

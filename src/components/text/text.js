@@ -4,6 +4,5 @@ import {LanguageContext} from '../../contexts/language'
 
 export default function Text(props) {
   const languageContext = useContext(LanguageContext)
-
-  return languageContext.dictionary[props.tid]
+  return languageContext.dictionary[props.name]
 }

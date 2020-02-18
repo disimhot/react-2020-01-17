@@ -37,7 +37,7 @@ const ReviewForm = ({id}) => {
       <Row type="flex" align="middle">
         <Col xs={24} md={18} align="left">
           <Typography.Title className={styles.addReviewTitle} level={4}>
-            <Text tid="review" />
+            <Text name="review" />
           </Typography.Title>
           <Form onSubmit={handleSubmit}>
             <Input
@@ -61,11 +61,11 @@ const ReviewForm = ({id}) => {
               })}
             />
             <div>
-              <Text tid="rating" />
+              <Text name="rating" />
               <Rate value={rating} onChange={handleRatingChange} />
             </div>
             <Button htmlType="submit" className={styles.submitButton}>
-              <Text tid="publish" />
+              <Text name="publish" />
             </Button>
           </Form>
         </Col>
