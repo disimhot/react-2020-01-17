@@ -7,7 +7,7 @@ export function LanguageProvider(props) {
   const [language, setLanguage] = useState(languageContext.language)
   const [dictionary, setDictionary] = useState(languageContext.dictionary)
 
-  const provider = {
+  const value = {
     language,
     dictionary,
     handleLangChange: language => {
@@ -17,7 +17,7 @@ export function LanguageProvider(props) {
   }
 
   return (
-    <LanguageContext.Provider value={provider}>
+    <LanguageContext.Provider value={value}>
       {props.children}
     </LanguageContext.Provider>
   )
