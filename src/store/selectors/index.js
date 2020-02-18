@@ -102,8 +102,8 @@ export const selectAverageRating = createSelector(selectReviews, reviews => {
 export const selectFirstRestaurant = createSelector(
   selectRestaurantsLoaded,
   selectRestaurants,
-  (isLoaded, restaurants) => {
-    if (!isLoaded) {
+  (loaded, restaurants) => {
+    if (!loaded) {
       return null
     }
     return restaurants[0]

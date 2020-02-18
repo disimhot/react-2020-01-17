@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Menu, MenuItem} from '../menu'
+import Menu from '../menu'
+import MenuItem from '../menu/menu-item'
 
 class RestaurantsNavigation extends Component {
   render() {

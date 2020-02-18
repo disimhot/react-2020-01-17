@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {Component} from 'react'
 import styles from '../restaurants-navigation/restaurants-navigation.module.css'
 
-function Menu(props) {
-  return <div className={styles.list}>{props.children}</div>
+class Menu extends Component {
+  render() {
+    return <div className={styles.list}>{this.props.children}</div>
+  }
 }
 
-export {Menu}
+export default Menu

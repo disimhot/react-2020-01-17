@@ -1,5 +1,3 @@
 import {createContext} from 'react'
 
-export const {Provider, Consumer} = createContext({
-  name: '',
-})
+export const {Provider, Consumer} = createContext('')

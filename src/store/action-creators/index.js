@@ -111,14 +111,13 @@ export const sendOrder = details => (dispatch, getState) => {
 }
 
 export const validateRestaurant = id => (dispatch, getState) => {
-  const state = getState()
-  const isLoaded = selectRestaurantsLoaded(state)
-  if (!isLoaded) {
-    return
-  }
-  const restaurants = selectRestaurants(state)
-  const targetRestaurant = restaurants.find(restaurant => restaurant.id === id)
-  if (!targetRestaurant) {
+  const restaurant = selectRestaurants(getState()).find(
+    restaurant => restaurant.id === id
+  )
+
+  const loaded = selectRestaurantsLoaded(getState())
+
+  if (loaded && !restaurant) {
     dispatch(replace('/404'))
   }
 }
