@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {languageOptions} from '../../languages'
 import {LanguageContext} from '../../contexts/language'
-import Text from '../text'
 
 class RSelect extends Component {
   state = {
