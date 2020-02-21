@@ -11,17 +11,22 @@ import {fetchRestaurants} from '../../store/action-creators'
 
 class RestaurantsMap extends Component {
   markers = []
+
   render() {
-    return <div ref={this.setEl} className="map" />
+    return <div ref={this.divRef} className="map" />
   }
-  setEl = ref => {
+
+  divRef = React.createRef()
+
+  refCallback = ref => {
     this.div = ref
   }
+
   componentDidMount() {
     if (!this.props.isRestaurantLoading && !this.props.isRestaurantLoaded) {
       this.props.fetchRestaurants()
     }
-    this.map = Leaflet.map(this.div, {
+    this.map = Leaflet.map(this.divRef.current, {
       center: [51.51847684708113, -0.13999606534701844],
       zoom: 12,
     })
