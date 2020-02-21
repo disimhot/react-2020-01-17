@@ -1,8 +1,22 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {NavLink} from 'react-router-dom'
 import styles from '../../restaurants-navigation/restaurants-navigation.module.css'
 
 function MenuItem(props) {
+  useEffect(() => {
+    // componentDidMount
+  }, [])
+
+  useEffect(() => {
+    // componentDidUpdate
+  }, [props])
+
+  useEffect(() => {
+    return () => {
+      // componentWillUnmount
+    }
+  }, [props])
+
   return (
     <NavLink
       className={styles.restaurant}

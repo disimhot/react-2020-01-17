@@ -13,7 +13,7 @@ class RestaurantsMap extends Component {
   markers = []
 
   render() {
-    return <div ref={this.divRef} className="map" />
+    return <div ref={this.refCallback} className="map" />
   }
 
   divRef = React.createRef()
@@ -26,7 +26,7 @@ class RestaurantsMap extends Component {
     if (!this.props.isRestaurantLoading && !this.props.isRestaurantLoaded) {
       this.props.fetchRestaurants()
     }
-    this.map = Leaflet.map(this.divRef.current, {
+    this.map = Leaflet.map(this.div, {
       center: [51.51847684708113, -0.13999606534701844],
       zoom: 12,
     })
