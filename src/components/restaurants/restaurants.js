@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react'
 import Restaurant from '../restaurant'
 import RestaurantsNavigation from '../restaurants-navigation'
-import {connect, useDispatch} from 'react-redux'
+import {connect} from 'react-redux'
 import {
   selectRestaurants,
   selectRestaurantsLoaded,
   selectRestaurantsLoading,
 } from '../../store/selectors'
-import {fetchRestaurants, validateRestaurant} from '../../store/action-creators'
+import {fetchRestaurants} from '../../store/action-creators'
 import Loader from '../loader'
 
 function Restaurants({
@@ -17,14 +17,9 @@ function Restaurants({
   restaurantsLoaded,
   fetchRestaurants,
 }) {
-  const dispatch = useDispatch()
   useEffect(() => {
     !restaurantsLoading && !restaurantsLoaded && fetchRestaurants()
   }, [fetchRestaurants, restaurantsLoading, restaurantsLoaded])
-
-  useEffect(() => {
-    dispatch(validateRestaurant(restaurantId))
-  }, [restaurantsLoaded, restaurantId, dispatch])
 
   if (restaurantsLoading) {
     return <Loader />
@@ -37,7 +32,7 @@ function Restaurants({
   return (
     <div data-automation-id="RESTAURANTS">
       <RestaurantsNavigation restaurants={restaurants} />
-      <Restaurant restaurant={restaurant} />
+      <Restaurant id={restaurantId} restaurant={restaurant} />
     </div>
   )
 }
@@ -50,7 +45,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchRestaurants,
-  validateRestaurant,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Restaurants)

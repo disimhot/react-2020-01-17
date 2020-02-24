@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Input, Button, Form} from 'antd'
 import {connect} from 'react-redux'
 import {sendOrder} from '../../store/action-creators'
-import {Consumer} from '../../contexts/user'
+import i18n from '../../decorators/i18n'
 
 class OrderForm extends Component {
   state = {
@@ -10,36 +10,26 @@ class OrderForm extends Component {
   }
 
   render() {
+    const {t} = this.props
     return (
       <Form
         layout={'inline'}
         style={{padding: '24px'}}
         onSubmit={this.handleSubmit}
       >
-        <h1 ref={this.setRefForSomeHTMLElement}>{'Form'}</h1>
+        <h1 ref={this.setRefForSomeHTMLElement}>{t('Form')}</h1>
         <Form.Item>
-          <Consumer>
-            {({name, handleUserChange}) => {
-              return (
-                <Input
-                  ref={this.setInput}
-                  placeholder={'User name'}
-                  value={name}
-                  onChange={event => {
-                    handleUserChange({
-                      name: event.target.value,
-                    })
-                    this.handleUserNameInputChange(event)
-                  }}
-                  style={{width: '120px'}}
-                />
-              )
-            }}
-          </Consumer>
+          <Input
+            ref={this.setInput}
+            placeholder={t('User name')}
+            value={this.state.userName}
+            onChange={this.handleUserNameInputChange}
+            style={{width: '120px'}}
+          />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {'Send order'}
+            {t('Send order')}
           </Button>
         </Form.Item>
       </Form>
@@ -50,6 +40,7 @@ class OrderForm extends Component {
     this.setState({
       userName: value,
     })
+    this.props.onUserNameChange(value)
   }
 
   setRefForSomeHTMLElement = ref => {
@@ -66,4 +57,4 @@ class OrderForm extends Component {
   }
 }
 
-export default connect(null, {sendOrder})(OrderForm)
+export default connect(null, {sendOrder})(i18n(OrderForm))

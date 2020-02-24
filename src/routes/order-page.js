@@ -7,7 +7,7 @@ class OrderPage extends Component {
     return (
       <div>
         <Cart />
-        <OrderForm handleUserChange={this.props.handleUserChange} />
+        <OrderForm onUserNameChange={this.props.onUserNameChange} />
       </div>
     )
   }

@@ -4,65 +4,75 @@ import Header from '../header'
 import './app.css'
 import {store} from '../../store'
 import {Provider} from 'react-redux'
-import {Route, Switch, Redirect} from 'react-router-dom'
+import {Redirect, Route, Switch} from 'react-router-dom'
 import RestaurantPage from '../../routes/restaurant-page'
 import CounterPage from '../../routes/counter-page'
 import OrderPage from '../../routes/order-page'
 import OrderComplete from '../../routes/order-complete'
 import {ConnectedRouter} from 'connected-react-router'
-import {history} from '../../history'
+import {history} from '../../store/history'
 import {Provider as UserProvider} from '../../contexts/user'
+import {Provider as LangProvider} from '../../contexts/i18n'
 
 class App extends Component {
   state = {
-    user: {name: ''},
+    lang: 'en',
+    userName: 'foo bar',
   }
 
-  handleUserChange = user => {
+  handleUserNameChange = userName => {
     this.setState({
-      user,
+      userName,
+    })
+  }
+
+  handleLangChange = lang => {
+    this.setState({
+      lang,
     })
   }
 
   render() {
     return (
-      <UserProvider
-        value={{
-          name: this.state.user.name,
-          handleUserChange: this.handleUserChange,
-        }}
-      >
-        <Provider store={store}>
-          <ConnectedRouter history={history}>
-            <div>
-              <Layout>
-                <Header />
-                <Layout.Content>
-                  <Switch>
-                    <Route
-                      path="/counter"
-                      exact
-                      strict
-                      component={CounterPage}
-                    />
-                    <Route path="/restaurant" component={RestaurantPage} />
-                    <Route
-                      path="/order"
-                      render={() => (
-                        <OrderPage handleUserChange={this.handleUserChange} />
-                      )}
-                    />
-                    <Route path="/order-complete" component={OrderComplete} />
-                    <Route path="/404" render={() => <h1>404</h1>} />
-                    <Redirect from="/" exact to="restaurant" />
-                    <Route path="/" render={() => <h1>Page not found</h1>} />
-                  </Switch>
-                </Layout.Content>
-              </Layout>
-            </div>
-          </ConnectedRouter>
-        </Provider>
-      </UserProvider>
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <UserProvider value={this.state.userName}>
+            <LangProvider value={this.state.lang}>
+              <div>
+                <Layout>
+                  <Header
+                    lang={this.state.lang}
+                    setLang={this.handleLangChange}
+                  />
+                  <Layout.Content>
+                    <Switch>
+                      <Route
+                        path="/counter"
+                        exact
+                        strict
+                        component={CounterPage}
+                      />
+                      <Route path="/restaurant" component={RestaurantPage} />
+                      <Route
+                        path="/order"
+                        render={() => (
+                          <OrderPage
+                            onUserNameChange={this.handleUserNameChange}
+                          />
+                        )}
+                      />
+                      <Route path="/order-complete" component={OrderComplete} />
+                      <Route path="/404" render={() => <h1>404</h1>} />
+                      <Redirect from={'/'} to={'/restaurant'} />
+                      <Route path="/" render={() => <h1>Page not found</h1>} />
+                    </Switch>
+                  </Layout.Content>
+                </Layout>
+              </div>
+            </LangProvider>
+          </UserProvider>
+        </ConnectedRouter>
+      </Provider>
     )
   }
 }

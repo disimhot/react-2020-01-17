@@ -1,31 +1,47 @@
-import React, {useEffect} from 'react'
-import {Route, Redirect} from 'react-router-dom'
+import React from 'react'
+import {Route} from 'react-router-dom'
 import Restaurants from '../components/restaurants/restaurants'
-import {selectFirstRestaurant} from '../store/selectors'
-import {connect} from 'react-redux'
+import {
+  selectFirstRestaurant,
+  selectRestaurantsLoaded,
+  selectRestaurantsLoading,
+} from '../store/selectors'
+import {connect, useDispatch} from 'react-redux'
+import {Switch, Redirect} from 'react-router-dom'
 import {fetchRestaurants} from '../store/action-creators'
 
-function RestaurantPage(props) {
-  useEffect(() => {
-    !props.firstRestaurant && props.fetchRestaurants()
-  }, [props])
-
-  if (props.match.isExact && props.firstRestaurant) {
-    return <Redirect to={`/restaurant/${props.firstRestaurant.id}`} />
+function RestaurantPage({
+  firstRestaurant,
+  restaurantsLoading,
+  restaurantsLoaded,
+  fetchRestaurants,
+}) {
+  const dispatch = useDispatch()
+  if (firstRestaurant === null || (!restaurantsLoading && !restaurantsLoaded)) {
+    dispatch(fetchRestaurants)
+    return null
   }
+
   return (
-    <Route
-      path="/restaurant/:id"
-      render={({match}) => <Restaurants restaurantId={match.params.id} />}
-    />
+    <Switch>
+      <Route
+        path="/restaurant/:id"
+        render={({match}) => <Restaurants restaurantId={match.params.id} />}
+      />
+      <Redirect from={'/restaurant'} to={`/restaurant/${firstRestaurant.id}`} />
+    </Switch>
   )
+}
+
+const mapDispatchToProps = {
+  fetchRestaurants,
 }
 
 export default connect(
   state => ({
     firstRestaurant: selectFirstRestaurant(state),
+    restaurantsLoading: selectRestaurantsLoading(state),
+    restaurantsLoaded: selectRestaurantsLoaded(state),
   }),
-  {
-    fetchRestaurants,
-  }
+  mapDispatchToProps
 )(RestaurantPage)

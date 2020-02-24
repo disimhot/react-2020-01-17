@@ -7,6 +7,9 @@ import Hero from '../hero'
 import styles from './restaurant.module.css'
 import {Col, Row} from 'antd'
 import Cart from '../cart'
+import {connect} from 'react-redux'
+import {validateRestaurant} from '../../store/action-creators'
+import RestaurantsMap from '../restaurants-map'
 
 class Restaurant extends Component {
   state = {
@@ -22,11 +25,14 @@ class Restaurant extends Component {
   }
 
   render() {
+    this.props.validateRestaurant(this.props.id)
+
     if (!this.props.restaurant) {
       return null
     }
     const {
-      restaurant: {id, name, menu},
+      id,
+      restaurant: {name, menu},
     } = this.props
 
     return (
@@ -36,6 +42,7 @@ class Restaurant extends Component {
         </Hero>
         <Row>
           <Col span={18} className={styles.restaurantContent}>
+            <RestaurantsMap id={id} />
             <Reviews id={id} />
             <Dishes menu={menu} />
           </Col>
@@ -56,4 +63,8 @@ Restaurant.propTypes = {
   }),
 }
 
-export default Restaurant
+export default connect(null, dispatch => {
+  return {
+    validateRestaurant: id => dispatch(validateRestaurant(id)),
+  }
+})(Restaurant)
